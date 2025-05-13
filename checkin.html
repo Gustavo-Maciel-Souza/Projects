@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+
+<html lang="pt-br">
+<head>
+<meta charset="utf-8"/>
+<title>Check-in de Doação</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .navbar {
+      background-color: #c62828;
+    }
+    .navbar-brand, .nav-link {
+      color: #fff !important;
+    }
+    .mensagem {
+      display: none;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    .mensagem.erro {
+      background-color: #ffcdd2;
+      color: #b71c1c;
+    }
+    .mensagem.sucesso {
+      background-color: #c8e6c9;
+      color: #1b5e20;
+    }
+    .fade {
+      animation: fadeEffect 0.7s;
+    }
+    @keyframes fadeEffect {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+<button onclick="history.back()" style="display: block; margin: 120px auto 30px auto; padding: 10px 20px; font-size: 16px; background-color: #f44336; color: white; border: none; border-radius: 5px; cursor: pointer;"><span>🩸 </span>Voltar para a anterior</button><nav class="navbar navbar-expand-lg navbar-dark">
+<div class="container">
+<a class="navbar-brand" href="index.html">Guia + Sangue</a>
+<button class="navbar-toggler" data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarNav">
+<ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="index.html">Início</a></li>
+<li class="nav-item"><a class="nav-link" href="registro.html">Registrar</a></li>
+<li class="nav-item"><a class="nav-link" href="hospitais.html">Hospitais</a></li>
+<li class="nav-item"><a class="nav-link active" href="checkin.html">Check-in de Doação</a></li>
+</ul>
+</div>
+</div>
+</nav>
+<div class="container mt-5">
+<h2 class="mb-4 text-center text-danger">Check-in de Doação</h2>
+<form onsubmit="return validarCheckin()">
+<div class="form-check mb-3">
+<input class="form-check-input" id="doc" type="checkbox"/>
+<label class="form-check-label" for="doc">Documento oficial com foto</label>
+</div>
+<div class="form-check mb-3">
+<input class="form-check-input" id="idade" type="checkbox"/>
+<label class="form-check-label" for="idade">Idade entre 16 e 69 anos</label>
+</div>
+<div class="form-check mb-3">
+<input class="form-check-input" id="peso" type="checkbox"/>
+<label class="form-check-label" for="peso">Peso mínimo de 50 kg</label>
+</div>
+<div class="form-check mb-3">
+<input class="form-check-input" id="saude" type="checkbox"/>
+<label class="form-check-label" for="saude">Estar bem de saúde</label>
+</div>
+<div class="form-check mb-3">
+<input class="form-check-input" id="alimentado" type="checkbox"/>
+<label class="form-check-label" for="alimentado">Estar alimentado</label>
+</div>
+<div class="form-check mb-4">
+<input class="form-check-input" id="alcool" type="checkbox"/>
+<label class="form-check-label" for="alcool">Não ter ingerido álcool nas últimas 12h</label>
+</div>
+<button class="btn btn-danger" id="checkinBtn" type="button">Enviar Check-in</button>
+</form>
+<div class="mensagem" id="mensagem" style="display: none; position: relative; padding-right: 30px;">
+<button onclick="this.parentElement.style.display='none';" style="position: absolute; top: 5px; right: 10px; border: none; background: none; font-size: 20px; cursor: pointer;">×</button>
+</div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("checkinBtn").addEventListener("click", function (e) {
+    e.preventDefault();
+
+    const requisitos = {
+      doc: "É necessário apresentar um documento oficial com foto para garantir sua identificação.",
+      idade: "A idade entre 16 e 69 anos é exigida por segurança e normas de saúde.",
+      peso: "O peso mínimo é importante para garantir a segurança do doador durante o processo.",
+      saude: "Estar saudável evita riscos tanto para o doador quanto para quem recebe o sangue.",
+      alimentado: "Estar alimentado ajuda a evitar mal-estar após a doação.",
+      alcool: "Evitar álcool é fundamental para garantir a qualidade do sangue doado."
+    };
+
+    let mensagensErro = [];
+    for (let id in requisitos) {
+      if (!document.getElementById(id).checked) {
+        mensagensErro.push("• " + requisitos[id]);
+      }
+    }
+
+    const divMensagem = document.getElementById("mensagem");
+    divMensagem.className = "mensagem"; // Resetar classe
+
+    if (mensagensErro.length > 0) {
+      divMensagem.classList.add("erro");
+      divMensagem.innerHTML = '<button onclick="this.parentElement.style.display=\'none\';" style="position: absolute; top: 5px; right: 10px; border: none; background: none; font-size: 20px; cursor: pointer;">×</button>' +
+        "<strong>Antes de continuar, verifique:</strong><br>" + mensagensErro.join("<br>");
+    } else {
+      divMensagem.classList.add("sucesso");
+      divMensagem.innerHTML = '<button onclick="this.parentElement.style.display=\'none\';" style="position: absolute; top: 5px; right: 10px; border: none; background: none; font-size: 20px; cursor: pointer;">×</button>' +
+        "Check-in realizado com sucesso!";
+    }
+
+    divMensagem.style.display = "block";
+  });
+});
+</script>
+</body>
+</html>
